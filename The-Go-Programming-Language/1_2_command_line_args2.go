@@ -11,5 +11,5 @@ func main() {
         s += sep + arg
         sep = " "
     }
-    fmt.Println(s);
+    fmt.Println(s)
 }
