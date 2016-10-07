@@ -4,8 +4,9 @@ import (
     "os"
     "net/http"
     "fmt"
-    "io/ioutil"
     "strings"
+    "io"
+    "log"
 )
 
 func main() {
@@ -22,14 +23,12 @@ func main() {
             os.Exit(1)
         }
 
-        b, err := ioutil.ReadAll(resp.Body)
-        resp.Body.Close()
-
-        if err != nil {
-            fmt.Fprintf(os.Stderr, "fetch: reading %s: %v\n", url, err)
+        if _, err := io.Copy(os.Stdout, resp.Body); err != nil {
+            log.Fatal(err)
             os.Exit(1)
         }
-
-        fmt.Printf("status code: %v\n body:%s", status, b)
+        fmt.Println()
+        fmt.Printf("status code: %v", status)
+        resp.Body.Close()
     }
 }
